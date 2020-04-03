@@ -12,6 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import HomeIcon from '@material-ui/icons/Home';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -51,6 +52,7 @@ class MainToobar extends Component {
     this.closeDrawer = this.closeDrawer.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.handleDashboard = this.handleDashboard.bind(this);
+    this.handleHome = this.handleHome.bind(this);
   }
 
   openDrawer() {
@@ -76,15 +78,27 @@ class MainToobar extends Component {
     });
   }
 
+  setVisibleView(viewId, visible) {
+    var view = document.getElementById(viewId);
+    if( view !== null )
+      view.style.display = visible ? "flex" : "none";
+  }
+
   handleDashboard() {
-    document.getElementById("mainView").style.display = "none";
+    this.setVisibleView("mainView", false);
+    this.setVisibleView("dashboardView", true);
+  }
+
+  handleHome() {
+    this.setVisibleView("mainView", true);
+    this.setVisibleView("dashboardView", false);
   }
 
   render() {
     const { classes, user } = this.props;
     const isManager = user !== null ? user.userLimit !== 0 : false;
     const isAdmin = user != null ? user.administrator : false;
-    
+  
     return (
       <Fragment>
         <AppBar position="static" className={classes.appBar}>
@@ -109,6 +123,12 @@ class MainToobar extends Component {
             onClick={this.closeDrawer}
             onKeyDown={this.closeDrawer}>
             <List>
+              <ListItem button onClick={this.handleHome}>
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Início" />
+              </ListItem>
               <ListItem button onClick={this.handleDashboard} 
                         style={isManager || isAdmin ? { display: 'none' } : { display: 'flex' }}>
                 <ListItemIcon>

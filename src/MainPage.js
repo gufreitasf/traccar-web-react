@@ -7,6 +7,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import SocketController from './SocketController';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import DeviceList from './DeviceList';
+import Dashboard from './Dashboard';
 
 const styles = theme => ({
   root: {
@@ -60,6 +61,8 @@ class MainPage extends Component {
   render() {
     const { classes } = this.props;
     const { loading } = this.state;
+    const hideStyle = { display: 'none' };
+
     if (loading) {
       return (
         <div>Carregando...</div>
@@ -82,7 +85,9 @@ class MainPage extends Component {
               </ContainerDimensions>
             </div>
           </div>
-
+          <div id="dashboardView" style={ hideStyle } >
+            <Dashboard />
+          </div>
         </div>
       );
     }
