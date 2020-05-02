@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import ContainerDimensions from 'react-container-dimensions';
-import MainToobar from './MainToolbar';
+import Layout from './Layout';
 import MainMap from './MainMap';
 import Drawer from '@material-ui/core/Drawer';
 import withStyles from '@material-ui/core/styles/withStyles';
 import SocketController from './SocketController';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import DeviceList from './DeviceList';
-import Dashboard from './Dashboard';
 
 const styles = theme => ({
   root: {
@@ -61,7 +60,6 @@ class MainPage extends Component {
   render() {
     const { classes } = this.props;
     const { loading } = this.state;
-    const hideStyle = { display: 'none' };
 
     if (loading) {
       return (
@@ -69,9 +67,8 @@ class MainPage extends Component {
       );
     } else {
       return (
-        <div className={classes.root}>
+        <Layout history={this.props.history}>
           <SocketController />
-          <MainToobar history={this.props.history} />
           <div id="mainView" className={classes.content}>
             <Drawer
               anchor={isWidthUp('sm', this.props.width) ? "left" : "bottom"}
@@ -79,16 +76,13 @@ class MainPage extends Component {
               classes={{ paper: classes.drawerPaper }}>
               <DeviceList />
             </Drawer>
-            <div id="mainMap" className={classes.mapContainer} >
+            <div className={classes.mapContainer} >
               <ContainerDimensions>
                 <MainMap/>
               </ContainerDimensions>
             </div>
           </div>
-          <div id="dashboardView" style={ hideStyle } >
-            <Dashboard />
-          </div>
-        </div>
+        </Layout>
       );
     }
   }

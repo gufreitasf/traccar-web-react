@@ -85,13 +85,15 @@ class MainToobar extends Component {
   }
 
   handleDashboard() {
-    this.setVisibleView("mainView", false);
-    this.setVisibleView("dashboardView", true);
+    console.log("props dash: ");
+    console.log(this.props)
+    this.props.history.push('/dashboard');
   }
 
   handleHome() {
-    this.setVisibleView("mainView", true);
-    this.setVisibleView("dashboardView", false);
+    console.log("props home: ");
+    console.log(this.props)
+    this.props.history.push('/');
   }
 
   render() {
