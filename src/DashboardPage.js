@@ -21,21 +21,6 @@ export default class DashboardPage extends Component {
                      />
                 </div>
                 <div style={ divStyle } >
-                    <DeviceChart />
-                </div>
-                <div style={ divStyle } >
-                    <DeviceChart />
-                </div>
-                <div style={ divStyle } >
-                    <DeviceChart />
-                </div> 
-                <div style={ divStyle } >
-                    <DeviceTable />
-                </div>
-                <div style={ divStyle } >
-                    <DeviceTable />
-                </div>
-                <div style={ divStyle } >
                     <DeviceTable />
                 </div>              
             </Layout>
