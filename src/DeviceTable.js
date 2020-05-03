@@ -19,7 +19,12 @@ const columns = [
     id: 'lastUpdate',
     label: 'Última Atualização',
     minWidth: 100,
-    format: (value) => Date.parse(value).toLocaleString(),
+    format: (value) =>  {
+      let ms = Date.parse(value);
+      let date = new Date( ms );
+      return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+    },
+    
   }
 ];
 
@@ -94,7 +99,7 @@ export default function StickyHeadTable() {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
+                        {column.format? column.format(value) : value}
                       </TableCell>
                     );
                   })}
