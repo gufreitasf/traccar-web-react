@@ -85,14 +85,10 @@ class MainToobar extends Component {
   }
 
   handleDashboard() {
-    console.log("props dash: ");
-    console.log(this.props)
     this.props.history.push('/dashboard');
   }
 
   handleHome() {
-    console.log("props home: ");
-    console.log(this.props)
     this.props.history.push('/');
   }
 

@@ -20,9 +20,13 @@ const columns = [
     label: 'Última Atualização',
     minWidth: 100,
     format: (value) =>  {
-      let ms = Date.parse(value);
-      let date = new Date( ms );
-      return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+      if( value !== null ) {
+        let ms = Date.parse(value);
+        let date = new Date( ms );
+        return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+      }
+      else
+        return "---";
     },
     
   }
@@ -31,25 +35,6 @@ const columns = [
 function createData(category, name, uniqueId, model, phone, lastUpdate) {
   return { category, name, uniqueId, model, phone, lastUpdate };
 }
-
-const rows = [
-  createData('car','India', 1324171354, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car2','India', 1324171355, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 13241714356, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 23241713356, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 123241713516, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 13224171356, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 132241716356, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 13242171356, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 13241721356, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 132417123156, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 13241713526, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 13241713356, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 13241713456, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 13241714356, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 13241713356, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-  createData('car3','India', 13241713256, 'TK103', '(31) 99376-3531',"2020-04-03T19:55:12.473+0000"),
-];
 
 const useStyles = makeStyles({
   root: {
@@ -60,10 +45,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function StickyHeadTable() {
+export default function StickyHeadTable(props) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const rows = props.devices;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
