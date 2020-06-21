@@ -78,7 +78,9 @@ class MainPage extends Component {
             </Drawer>
             <div className={classes.mapContainer} >
               <ContainerDimensions>
-                <MainMap/>
+                { ({ width, height }) =>
+                  <MainMap width={width} height={height} />
+                }
               </ContainerDimensions>
             </div>
           </div>

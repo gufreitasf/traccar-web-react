@@ -46,7 +46,7 @@ class DeviceList extends Component {
     const devices = this.props.devices.map(device =>
       <Fragment key={device.id.toString()}>
         <ListItem button onClick={this.handleClick.bind(this,device.id) }>
-          <DeviceImage category={device.category} />
+          <DeviceImage category={device.category} lastUpdate={device.lastUpdate}/>
           <ListItemText primary={device.name} secondary={device.uniqueId} />
           <ListItemSecondaryAction>
             <IconButton>

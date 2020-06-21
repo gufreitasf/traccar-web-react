@@ -39,7 +39,7 @@ const styles = theme => ({
     render() {
         const { classes } = this.props;
         return(
-            <div>
+          <div className={classes.root}>
               <MainToobar history={this.props.history} />
                  { this.props.children }
             </div>

@@ -9,8 +9,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 
+import DeviceImage from './DeviceImage'
+
 const columns = [
-  { id: 'category', label: 'Categoria', minWidth: 40 },
+  { id: 'category', label: 'Categoria', minWidth: 40},
   { id: 'name', label: 'Nome', minWidth: 100 },
   { id: 'uniqueId', label: 'Identificador', minWidth: 50 },
   { id: 'model', label: 'Modelo', minWidth: 40 },
@@ -31,10 +33,6 @@ const columns = [
     
   }
 ];
-
-function createData(category, name, uniqueId, model, phone, lastUpdate) {
-  return { category, name, uniqueId, model, phone, lastUpdate };
-}
 
 const useStyles = makeStyles({
   root: {
@@ -83,8 +81,17 @@ export default function StickyHeadTable(props) {
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.uniqueId}>
                   {columns.map((column) => {
                     const value = row[column.id];
+                    const icon = () => {
+                      return (
+                          <td><DeviceImage category={ value } lastUpdate={row.lastUpdate}/></td>
+                      )
+                    } 
                     return (
-                      <TableCell key={column.id} align={column.align}>
+                      <TableCell 
+                        key={column.id}
+                        align={column.align}
+                        component={ column.id === 'category' ? icon : "" }
+                      >
                         {column.format? column.format(value) : value}
                       </TableCell>
                     );
