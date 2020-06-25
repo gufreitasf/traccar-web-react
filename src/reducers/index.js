@@ -44,7 +44,7 @@ function rootReducer(state = initialState, action) {
     case 'SELECT_DEVICES':
       return Object.assign({}, {
         ...state,
-        selectedDevices: [...action.devices]
+        selectedDevices: [...action.selectedDevices]
       });
 
     case 'UPDATE_POSITIONS':
