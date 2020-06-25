@@ -12,7 +12,7 @@ const initialState = {
 
 function rootReducer(state = initialState, action) {
 
-   console.log(action);
+  //console.log(action);
 
   switch (action.type) {
     case "RESET_USER": {

@@ -20,7 +20,6 @@ class MainMap extends Component {
     const centerMap = [this.props.centerMap.lat, this.props.centerMap.lng];
     const markers = this.props.positions.map(position =>
       {
-        console.log("this.props.selectedDevices: ", this.props.selectedDevices);
         let device = this.props.selectedDevices.find( device => device.id=== position.deviceId );
         if( device ) {
           return (
