@@ -1,5 +1,6 @@
 const initialState = {
   devices: [],
+  selectedDevices: [],
   positions: [],
   events: [],
   centerMap: {
@@ -11,7 +12,7 @@ const initialState = {
 
 function rootReducer(state = initialState, action) {
 
-  // console.log(action);
+   console.log(action);
 
   switch (action.type) {
     case "RESET_USER": {
@@ -39,6 +40,12 @@ function rootReducer(state = initialState, action) {
         devices: [...devices]
       });
     }
+
+    case 'SELECT_DEVICES':
+      return Object.assign({}, {
+        ...state,
+        selectedDevices: [...action.devices]
+      });
 
     case 'UPDATE_POSITIONS':
       return Object.assign({}, {

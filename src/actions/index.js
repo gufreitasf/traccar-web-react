@@ -3,6 +3,11 @@ export const updateDevices = devices => ({
   devices
 })
 
+export const selectDevices = selectedDevices => ({
+  type: 'SELECT_DEVICES',
+  selectedDevices
+})
+
 export const updatePositions = positions => ({
   type: 'UPDATE_POSITIONS',
   positions

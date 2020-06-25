@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { updateDevices, centerMapPosition } from './actions';
+import { updateDevices, selectDevices, centerMapPosition } from './actions';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Divider from '@material-ui/core/Divider';
 import DeviceImage from './DeviceImage'
+import DeviceSelector from './DeviceSelector'
 
 const mapStateToProps = state => ({
   positions: state.positions,
@@ -16,6 +17,14 @@ const mapStateToProps = state => ({
 });
 
 class DeviceList extends Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedDevices: null
+    };
+  }
+
   componentDidMount() {
     fetch('/api/devices').then(response => {
       if (response.ok) {
@@ -23,6 +32,13 @@ class DeviceList extends Component {
           this.props.dispatch(updateDevices(devices));
         });
       }
+    });
+  }
+
+  selectDevices(devices) {
+    this.props.dispatch(selectDevices(devices));
+    this.setState({
+      selectedDevices: devices
     });
   }
 
@@ -43,28 +59,48 @@ class DeviceList extends Component {
   } 
 
   render() {
-    const devices = this.props.devices.map(device =>
-      <Fragment key={device.id.toString()}>
-        <ListItem button onClick={this.handleClick.bind(this,device.id) }>
-          <DeviceImage category={device.category} lastUpdate={device.lastUpdate}/>
-          <ListItemText primary={device.name} secondary={device.uniqueId} />
-          <ListItemSecondaryAction>
-            <IconButton>
-              <MoreVertIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <li>
-          <Divider variant="inset" />
-        </li>
-      </Fragment>
-    );
+      let devices = ""
+      let deviceSelector = ""
+      let selectedDevices = this.state.selectedDevices;
+      if(this.props.devices && this.props.devices.length <= 3) {
+          selectedDevices = this.props.devices;
+      }
+      else {
+          deviceSelector = <DeviceSelector 
+                              onChange={(event, newValue) => {
+                                event.preventDefault();
+                                this.selectDevices(newValue);
+                              }}
+                          />
+      }
+      if(selectedDevices) {
+        devices = selectedDevices.map(device =>
+          <Fragment key={device.id.toString()}>
+            <ListItem button onClick={this.handleClick.bind(this,device.id) }>
+              <DeviceImage category={device.category} lastUpdate={device.lastUpdate}/>
+              <ListItemText primary={device.name} secondary={device.uniqueId} />
+              <ListItemSecondaryAction>
+                <IconButton>
+                  <MoreVertIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+            <li>
+              <Divider variant="inset" />
+            </li>
+          </Fragment>
+        );
+      }
 
-    return (
-      <List>
-        {devices}
-      </List>
-    );
+      return (
+        <div>
+          {deviceSelector}
+          <List>
+            {devices}
+          </List>
+        </div>
+      );
+    
   }
 }
 

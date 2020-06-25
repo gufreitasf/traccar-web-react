@@ -7,7 +7,7 @@ import DeviceImage from './DeviceImage'
 
 const mapStateToProps = state => ({
   positions: state.positions,
-  devices: state.devices,
+  selectedDevices: state.selectedDevices,
   centerMap: state.centerMap
 });
 
@@ -20,7 +20,8 @@ class MainMap extends Component {
     const centerMap = [this.props.centerMap.lat, this.props.centerMap.lng];
     const markers = this.props.positions.map(position =>
       {
-        let device = this.props.devices.find( device => device.id=== position.deviceId );
+        console.log("this.props.selectedDevices: ", this.props.selectedDevices);
+        let device = this.props.selectedDevices.find( device => device.id=== position.deviceId );
         if( device ) {
           return (
             <DivIcon key={position.id.toString()} position={{ lat: position.latitude, lng: position.longitude }} className="" iconSize={[50, 50]}>
