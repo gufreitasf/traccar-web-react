@@ -71,16 +71,18 @@ class DashboardPage extends Component {
             return (
                 <Layout history={this.props.history}>
                     <h1 align="center">Dashboard dos dispositivos</h1>
-                    <div style={ divStyle } >
-                        <DeviceChartSum
-                            totalValue={ devices.length }
-                            updated={ updated.length }
-                            outdated={ outdated.length }
-                            maintenance={ maintenance.length }
-                        />
-                    </div>
-                    <div style={ divStyle } >
-                        <DeviceTable devices={devices} />
+                    <div>
+                        <div style={ divStyle } >
+                            <DeviceChartSum
+                                totalValue={ devices.length }
+                                updated={ updated.length }
+                                outdated={ outdated.length }
+                                maintenance={ maintenance.length }
+                            />
+                        </div>
+                        <div style={ divStyle } >
+                            <DeviceTable devices={devices} />
+                        </div>
                     </div>
                 </Layout>
             );
