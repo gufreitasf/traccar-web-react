@@ -4,6 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import MainPage from './MainPage';
 import LoginPage from './LoginPage';
 import DashboardPage from './DashboardPage';
+import SettingsPage from './SettingsPage';
 import './App.css';
 
 class App extends Component {
@@ -16,6 +17,7 @@ class App extends Component {
             <Route exact path='/' component={MainPage} />
             <Route exact path='/login' component={LoginPage} />
             <Route exact path='/dashboard' component={DashboardPage} />
+            <Route exact path='/settings' component={SettingsPage} />
           </Switch>
         </BrowserRouter>
       </Fragment>

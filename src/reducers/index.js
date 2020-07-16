@@ -1,5 +1,6 @@
 const initialState = {
   devices: [],
+  users: [],
   selectedDevices: [],
   positions: [],
   events: [],
@@ -38,6 +39,14 @@ function rootReducer(state = initialState, action) {
       return Object.assign({}, {
         ...state,
         devices: [...devices]
+      });
+    }
+
+    case 'UPDATE_USERS': {
+
+      return Object.assign({}, {
+        ...state,
+        users: [...action.users]
       });
     }
 

@@ -9,29 +9,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 
-import DeviceImage from './DeviceImage'
-
 const columns = [
-  { id: 'category', label: 'Categoria', minWidth: 40},
+  { id: 'id', label: 'Id', minWidth: 20 },
   { id: 'name', label: 'Nome', minWidth: 100 },
-  { id: 'uniqueId', label: 'Identificador', minWidth: 50 },
-  { id: 'model', label: 'Modelo', minWidth: 40 },
+  { id: 'email', label: 'Email', minWidth: 50 },
   { id: 'phone', label: 'Telefone', minWidth: 50 },
-  {
-    id: 'lastUpdate',
-    label: 'Última Atualização',
-    minWidth: 100,
-    format: (value) =>  {
-      if( value !== null ) {
-        let ms = Date.parse(value);
-        let date = new Date( ms );
-        return date.toLocaleDateString() + " " + date.toLocaleTimeString();
-      }
-      else
-        return "---";
-    },
-    
-  }
+  { id: 'disable', label: 'Desativado', minWidth: 40 }
 ];
 
 const useStyles = makeStyles({
@@ -43,11 +26,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function StickyHeadTable(props) {
+export default function UserTable(props) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const rows = props.devices;
+  let rows = props.users;
   if(rows == null)
     rows = [];
 
@@ -80,19 +63,13 @@ export default function StickyHeadTable(props) {
           <TableBody>
             {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.uniqueId}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                   {columns.map((column) => {
                     const value = row[column.id];
-                    const icon = () => {
-                      return (
-                          <td><DeviceImage category={ value } lastUpdate={row.lastUpdate}/></td>
-                      )
-                    } 
                     return (
                       <TableCell 
                         key={column.id}
                         align={column.align}
-                        component={ column.id === 'category' ? icon : "" }
                       >
                         {column.format? column.format(value) : value}
                       </TableCell>

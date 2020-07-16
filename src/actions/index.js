@@ -3,6 +3,11 @@ export const updateDevices = devices => ({
   devices
 })
 
+export const updateUsers = users => ({
+  type: 'UPDATE_USERS',
+  users
+})
+
 export const selectDevices = selectedDevices => ({
   type: 'SELECT_DEVICES',
   selectedDevices

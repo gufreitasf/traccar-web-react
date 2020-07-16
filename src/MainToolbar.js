@@ -52,6 +52,7 @@ class MainToobar extends Component {
     this.closeDrawer = this.closeDrawer.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.handleDashboard = this.handleDashboard.bind(this);
+    this.handleSettings = this.handleSettings.bind(this);
     this.handleHome = this.handleHome.bind(this);
   }
 
@@ -86,6 +87,10 @@ class MainToobar extends Component {
 
   handleDashboard() {
     this.props.history.push('/dashboard');
+  }
+
+  handleSettings() {
+    this.props.history.push('/settings');
   }
 
   handleHome() {
@@ -143,7 +148,7 @@ class MainToobar extends Component {
             </List>
             <Divider />
             <List>
-              <ListItem button>
+              <ListItem button onClick={this.handleSettings}>
                 <ListItemIcon>
                   <SettingsIcon />
                 </ListItemIcon>
