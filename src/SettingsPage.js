@@ -61,7 +61,7 @@ class SettingsPage extends Component {
                     <div >
                         <div style={ divStyle } >
                             <h1 align="center">Usuários</h1>
-                            <UserTable users={users}/>
+                            <UserTable users={users} />
                         </div>
                         <div style={ divStyle } >
                             <h1 align="center">Dispositivos</h1>

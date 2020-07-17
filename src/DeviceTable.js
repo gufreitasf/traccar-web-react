@@ -47,7 +47,7 @@ export default function StickyHeadTable(props) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const rows = props.devices;
+  let rows = props.devices;
   if(rows == null)
     rows = [];
 

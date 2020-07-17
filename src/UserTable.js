@@ -1,101 +1,135 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import MaterialTable from "material-table";
+import { updateUsers } from './actions';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import AlertDeleteUser from './AlertDeleteUser';
 
 const columns = [
-  { id: 'id', label: 'Id', minWidth: 20 },
-  { id: 'name', label: 'Nome', minWidth: 100 },
-  { id: 'email', label: 'Email', minWidth: 50 },
-  { id: 'phone', label: 'Telefone', minWidth: 50 },
-  { id: 'disable', label: 'Desativado', minWidth: 40 }
+  { field: 'name', title: 'Nome'},
+  { field: 'email', title: 'Email'},
+  { field: 'phone', title: 'Telefone' },
+  { field: 'disable', title: 'Desativado' }
 ];
 
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-  },
-  container: {
-    maxHeight: 440,
-  },
-});
+const styles = theme => ({
+    root: {
+        width: '100%',
+      },
+      container: {
+        maxHeight: 440,
+      },
+    });
+    
+class UserTable extends Component {
 
-export default function UserTable(props) {
-  const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  let rows = props.users;
-  if(rows == null)
-    rows = [];
+    constructor(props) {
+        super(props);
+        this.state = {
+          alertOpen: false,
+          currentUser: null
+        };
+        this.openAlertDeleteUser = this.openAlertDeleteUser.bind(this);
+        this.deleteUser = this.deleteUser.bind(this);
+      }
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+    openAlertDeleteUser(open) {
+        this.setState({
+            alertOpen: open
+        });
+    }
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  return (
-    <Paper className={classes.root}>
-      <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell 
-                        key={column.id}
-                        align={column.align}
-                      >
-                        {column.format? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        labelRowsPerPage="Itens por página"
-        labelDisplayedRows={
-            ({ from, to, count }) => {
-              return '' + from + '-' + to + ' de ' + count
+    deleteUser(user) {
+        fetch("/api/users/" + user.id, {
+            method: "DELETE"
+        }).then(response => {
+            if (response.ok) {
+                fetch('/api/users').then(response => {
+                    if (response.ok) {
+                        response.json().then(users => {
+                            this.props.dispatch(updateUsers(users));
+                        });
+                    }
+                });
             }
-          }
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
-    </Paper>
-  );
+        });
+    }
+
+    render() {
+    let rows = this.props.users;
+    const { alertOpen, currentUser } = this.state;
+    if(rows == null)
+        rows = [];
+
+    return (
+            <div>
+                <AlertDeleteUser
+                    user={currentUser}
+                    open={alertOpen}
+                    setOpen={this.openAlertDeleteUser}
+                    onConfirm={this.deleteUser}
+                />
+                <MaterialTable
+                    columns={columns}
+                    data={rows}
+                    title="Usuários"
+                    actions={[
+                        {
+                            icon: 'edit',
+                            tooltip: 'Editar Usuário',
+                            onClick:(event, rowData) => {
+                                console.log(rowData);
+                            }
+                        },
+                        {
+                            icon: 'delete',
+                            tooltip: 'Remover Usuário',
+                            onClick: (event, rowData) => {
+                                this.setState({
+                                    currentUser: rowData
+                                });
+                                this.openAlertDeleteUser(true);
+                            }
+                        },
+                        {
+                            icon: 'add',
+                            tooltip: 'Adicionar  Usuário',
+                            isFreeAction: true,
+                            onClick: () => {
+                            // open dialog to save new one
+                            }
+                        }
+                        ]}
+                    localization={{
+                        body: {
+                            emptyDataSourceMessage: 'Nenhum registro para exibir',
+                            addTooltip: 'Adicionar'
+                        },
+                        toolbar: {
+                            searchTooltip: 'Pesquisar',
+                            searchPlaceholder: 'Pesquisar',
+                            nRowsSelected: '{0} linha(s) selecinada(s)'
+                        },
+                        pagination: {
+                            labelRowsSelect: 'linhas',
+                            labelDisplayedRows: '{count} de {from}-{to}',
+                            firstTooltip: 'Primeira página',
+                            previousTooltip: 'Página anterior',
+                            nextTooltip: 'Próxima página',
+                            lastTooltip: 'Última página'
+                        },
+                        header: {
+                            actions: 'Ações'
+                        }
+                        }}
+                />
+            </div>
+        );
+    }
 }
+
+export default compose(
+    withStyles(styles),
+    connect()
+  )(UserTable);
