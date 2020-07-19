@@ -16,6 +16,18 @@ const mapStateToProps = state => ({
   loggedUser: state.user
 });
 
+const initialState = {
+    id: -1,
+    name: "",
+    email: "",
+    phone: "",
+    login: "",
+    password: "",
+    userDisabled: false,
+    isAdmin: false,
+    isManager: false
+  };
+
 class EditUserDialog extends Component {
 
     constructor(props) {
@@ -36,18 +48,23 @@ class EditUserDialog extends Component {
       }
 
       componentDidUpdate(prevProps) {
-          if(this.props.user !== null && this.props.user !== prevProps.user) {
+          if(this.props.user !== prevProps.user) {
               const user = this.props.user;
-            this.setState({
-                id: user.id,
-                name: user.name !== null ? user.name : "",
-                email: user.email !== null ? user.email : "",
-                phone: user.phone !== null ? user.phone : "",
-                login: user.login !== null ? user.login : "",
-                userDisabled: user.disabled,
-                isAdmin: user != null ? user.administrator : false,
-                isManager: user !== null ? user.userLimit !== 0 : false
-              });
+              if(this.props.user !== null ) {
+                    this.setState({
+                        id: user.id,
+                        name: user.name !== null ? user.name : "",
+                        email: user.email !== null ? user.email : "",
+                        phone: user.phone !== null ? user.phone : "",
+                        login: user.login !== null ? user.login : "",
+                        userDisabled: user.disabled,
+                        isAdmin: user != null ? user.administrator : false,
+                        isManager: user !== null ? user.userLimit !== 0 : false
+                    });
+                }
+                else {
+                    this.setState(initialState);
+                }
           }
       }
 
@@ -84,6 +101,7 @@ class EditUserDialog extends Component {
                             id="name"
                             value={name}
                             autoFocus
+                            autoComplete="new-password"
                             onChange={this.handleChange}
                         />
                     </FormControl>
@@ -93,6 +111,7 @@ class EditUserDialog extends Component {
                             id="email"
                             type="email"
                             value={email}
+                            autoComplete="new-password"
                             onChange={this.handleChange}
                         />
                     </FormControl>
@@ -102,6 +121,7 @@ class EditUserDialog extends Component {
                             id="phone"
                             type="tel"
                             value={phone}
+                            autoComplete="new-password"
                             onChange={this.handleChange}
                         />
                     </FormControl>
@@ -110,6 +130,7 @@ class EditUserDialog extends Component {
                         <Input
                             id="login"
                             value={login}
+                            autoComplete="new-password"
                             onChange={this.handleChange}
                         />
                     </FormControl>
@@ -119,6 +140,7 @@ class EditUserDialog extends Component {
                             id="password"
                             type="password"
                             value={password}
+                            autoComplete="new-password"
                             onChange={this.handleChange}
                         />
                     </FormControl>

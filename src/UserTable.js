@@ -68,8 +68,10 @@ class UserTable extends Component {
     }
 
     updateUser(user) {
-        fetch("/api/users/" + user.id, {
-            method: "PUT",
+        const url = "/api/users/" + (user.id !== -1 ? user.id : "");
+        const method = user.id !== -1 ? "PUT" : "POST"
+        fetch(url, {
+            method: method,
             body: new Blob([JSON.stringify(user)], {type : 'application/json'})
         }).then(response => {
             if (response.ok) {
@@ -134,7 +136,10 @@ class UserTable extends Component {
                             tooltip: 'Adicionar  Usuário',
                             isFreeAction: true,
                             onClick: () => {
-                            // open dialog to save new one
+                                this.setState({
+                                    currentUser: null
+                                });
+                                this.openEditUserDialog(true);
                             }
                         }
                         ]}
