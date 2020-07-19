@@ -180,8 +180,8 @@ class EditUserDialog extends Component {
                             password: password,
                             disabled: userDisabled,
                             administrator: isAdmin,
-                            userLimit: isManager ? -1 : 0,
-                            deviceLimit: -1
+                            userLimit: isManager || isAdmin ? -1 : 0,
+                            deviceLimit: isManager || isAdmin ? -1 : 0
                         };
                         onConfirm(userToUpdate);
                     }}

@@ -97,11 +97,11 @@ class LoginPage extends Component {
           <form onSubmit={this.handleLogin}>
 
             <FormControl margin="normal" required error={failed}>
-              <InputLabel htmlFor="email">Email</InputLabel>
+              <InputLabel htmlFor="email">Login ou email</InputLabel>
               <Input
                 id="email"
                 value={email}
-                autoComplete="email"
+                autoComplete="login"
                 autoFocus
                 onChange={this.handleChange} />
               { failed && <FormHelperText>Usuário ou senha inválidos</FormHelperText> }
