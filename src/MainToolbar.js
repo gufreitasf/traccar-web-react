@@ -149,7 +149,7 @@ class MainToobar extends Component {
                 <ListItemText primary="Início" />
               </ListItem>
               <ListItem button onClick={this.handleDashboard} 
-                        style={isManager || isAdmin ? { display: 'none' } : { display: 'flex' }}>
+                        style={isManager || isAdmin ? { display: 'flex' } : { display: 'none' }}>
                 <ListItemIcon>
                   <DashboardIcon />
                 </ListItemIcon>
@@ -164,7 +164,8 @@ class MainToobar extends Component {
             </List>
             <Divider />
             <List>
-              <ListItem button onClick={this.handleSettings}>
+              <ListItem button onClick={this.handleSettings}
+                        style={isManager || isAdmin ? { display: 'flex' } : { display: 'none' }}>
                 <ListItemIcon>
                   <SettingsIcon />
                 </ListItemIcon>
