@@ -5,12 +5,14 @@ import { updateUsers } from './actions';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import AlertDeleteUser from './AlertDeleteUser';
+import EditUserDialog from './EditUserDialog'
 
 const columns = [
+  { field: 'login', title: 'Login'},
   { field: 'name', title: 'Nome'},
   { field: 'email', title: 'Email'},
   { field: 'phone', title: 'Telefone' },
-  { field: 'disable', title: 'Desativado' }
+  { field: 'disabled', title: 'Desativado', render: rowData => rowData.disabled ? "Sim" : "Não"  }
 ];
 
 const styles = theme => ({
@@ -28,15 +30,24 @@ class UserTable extends Component {
         super(props);
         this.state = {
           alertOpen: false,
+          editOpen: false,
           currentUser: null
         };
         this.openAlertDeleteUser = this.openAlertDeleteUser.bind(this);
+        this.openEditUserDialog = this.openEditUserDialog.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
+        this.updateUser = this.updateUser.bind(this);
       }
 
     openAlertDeleteUser(open) {
         this.setState({
             alertOpen: open
+        });
+    }
+
+    openEditUserDialog(open) {
+        this.setState({
+            editOpen: open
         });
     }
 
@@ -56,9 +67,26 @@ class UserTable extends Component {
         });
     }
 
+    updateUser(user) {
+        fetch("/api/users/" + user.id, {
+            method: "PUT",
+            body: new Blob([JSON.stringify(user)], {type : 'application/json'})
+        }).then(response => {
+            if (response.ok) {
+                fetch('/api/users').then(response => {
+                    if (response.ok) {
+                        response.json().then(users => {
+                            this.props.dispatch(updateUsers(users));
+                        });
+                    }
+                });
+            }
+        });
+    }
+
     render() {
     let rows = this.props.users;
-    const { alertOpen, currentUser } = this.state;
+    const { alertOpen, editOpen, currentUser } = this.state;
     if(rows == null)
         rows = [];
 
@@ -70,16 +98,25 @@ class UserTable extends Component {
                     setOpen={this.openAlertDeleteUser}
                     onConfirm={this.deleteUser}
                 />
+                <EditUserDialog
+                    user={currentUser}
+                    open={editOpen}
+                    setOpen={this.openEditUserDialog}
+                    onConfirm={this.updateUser}
+                />
                 <MaterialTable
                     columns={columns}
                     data={rows}
-                    title="Usuários"
+                    title=""
                     actions={[
                         {
                             icon: 'edit',
                             tooltip: 'Editar Usuário',
                             onClick:(event, rowData) => {
-                                console.log(rowData);
+                                this.setState({
+                                    currentUser: rowData
+                                });
+                                this.openEditUserDialog(true);
                             }
                         },
                         {

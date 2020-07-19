@@ -20,6 +20,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { resetUser } from './actions';
+import { updateCurrentUser } from './actions';
 
 const mapStateToProps = state => ({
   user: state.user
@@ -54,6 +55,21 @@ class MainToobar extends Component {
     this.handleDashboard = this.handleDashboard.bind(this);
     this.handleSettings = this.handleSettings.bind(this);
     this.handleHome = this.handleHome.bind(this);
+  }
+
+  componentDidMount() {
+    if(this.props.user === null) {
+      fetch('/api/session').then(response => {
+        if (response.ok) {
+          response.json().then(user => {
+            this.props.dispatch(updateCurrentUser(user));
+          });
+        }
+        else {
+          this.props.history.push('/login');
+        }
+      });
+    }
   }
 
   openDrawer() {

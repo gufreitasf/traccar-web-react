@@ -74,7 +74,6 @@ class LoginPage extends Component {
         this.props.history.push('/'); // TODO avoid calling sessions twice
         response.json().then(user => {
           this.props.dispatch(updateCurrentUser(user));
-          console.log(user);
         });
         
       } else {
