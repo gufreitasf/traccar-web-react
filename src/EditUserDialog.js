@@ -32,17 +32,7 @@ class EditUserDialog extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-          id: -1,
-          name: "",
-          email: "",
-          phone: "",
-          login: "",
-          password: "",
-          userDisabled: false,
-          isAdmin: false,
-          isManager: false
-        };
+        this.state = initialState;
         this.handleChange = this.handleChange.bind(this);
         this.handleChecked = this.handleChecked.bind(this);
       }
@@ -90,9 +80,9 @@ class EditUserDialog extends Component {
             <Dialog
             open={open}
             onClose={() => setOpen(false)}
-            aria-labelledby="confirm-dialog"
+            aria-labelledby="editUser-dialog"
             >
-            <DialogTitle id="confirm-dialog">Ficha do usuário</DialogTitle>
+            <DialogTitle id="editUser-dialog">Ficha do usuário</DialogTitle>
             <DialogContent>
                 <form>
                     <FormControl margin="normal" required >
