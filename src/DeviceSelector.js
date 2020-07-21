@@ -9,7 +9,9 @@ const mapStateToProps = state => ({
 
 class DeviceSelector extends Component {
     render() {
-        const { devices } = this.props;
+        let { devices, defaultValue, disableClearable } = this.props;
+        if(defaultValue === null)
+            defaultValue = [];
 
         if( devices && devices.length > 0 ) {
 
@@ -18,6 +20,11 @@ class DeviceSelector extends Component {
                     multiple
                     id="tags-standard"
                     options={devices}
+                    defaultValue={defaultValue}
+                    disableClearable={disableClearable}
+                    clearText="Limpar seleção"
+                    filterSelectedOptions={false}
+                    style={{ maxWidth: 400 }}
                     getOptionLabel={(option) => option.name}
                     renderInput={(params) => (
                     <TextField
