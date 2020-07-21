@@ -48,8 +48,13 @@ export default function StickyHeadTable(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   let rows = props.devices;
-  if(rows == null)
+  if(rows == null) {
     rows = [];
+  }
+  let visibleColumns = props.visibleColumns;
+  if(visibleColumns == null) {
+    visibleColumns = ['category', 'name', 'uniqueId', 'model', 'phone', 'lastUpdate'];
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -66,15 +71,23 @@ export default function StickyHeadTable(props) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
+              {columns.map((column) => {
+                if(visibleColumns.includes(column.id)) {
+                  return (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  )
+                }
+                else {
+                  return null;
+                }
+              }
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -82,21 +95,27 @@ export default function StickyHeadTable(props) {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={row.uniqueId}>
                   {columns.map((column) => {
-                    const value = row[column.id];
-                    const icon = () => {
+                    if(visibleColumns.includes(column.id)) {
+                      const value = row[column.id];
+                      const icon = () => {
+                        return (
+                            <td><DeviceImage category={ value } lastUpdate={row.lastUpdate}/></td>
+                        )
+                      } 
                       return (
-                          <td><DeviceImage category={ value } lastUpdate={row.lastUpdate}/></td>
-                      )
-                    } 
-                    return (
-                      <TableCell 
-                        key={column.id}
-                        align={column.align}
-                        component={ column.id === 'category' ? icon : "" }
-                      >
-                        {column.format? column.format(value) : value}
-                      </TableCell>
-                    );
+                        <TableCell 
+                          key={column.id}
+                          align={column.align}
+                          component={ column.id === 'category' ? icon : "" }
+                        >
+                          {column.format? column.format(value) : value}
+                        </TableCell>
+                      );
+                    }
+                    else {
+                      return null;
+                    }
+                    
                   })}
                 </TableRow>
               );
