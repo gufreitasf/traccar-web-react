@@ -49,7 +49,7 @@ class DeviceSelector extends Component {
                     filterSelectedOptions={false}
                     style={{ maxWidth: 400 }}
                     getOptionLabel={(option) => option.name}
-                    getOptionSelected={(option) => option.name}
+                    getOptionSelected={(option, value) => option.id === value.id}
                     renderInput={(params) => (
                         <TextField
                             {...params}
@@ -60,6 +60,9 @@ class DeviceSelector extends Component {
                         />
                     )}
                     onChange={(event, newValue) => {
+                        this.setState({
+                            selectedDevices: newValue
+                        });
                         this.props.onChange(event, newValue);
                     }}
                 />
