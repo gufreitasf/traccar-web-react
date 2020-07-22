@@ -40,7 +40,7 @@ class EditUserDialog extends Component {
       componentDidUpdate(prevProps) {
           if(this.props.user !== prevProps.user) {
               const user = this.props.user;
-              if(this.props.user !== null ) {
+              if(this.props.user != null ) {
                     this.setState({
                         id: user.id,
                         name: user.name !== null ? user.name : "",
