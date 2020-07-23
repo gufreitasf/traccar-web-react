@@ -52,7 +52,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://engesp.gutatech.com",
+  "proxy": "https://engesp.gutatech.com.br",
   "devDependencies": {
     "webpack": "^4.43.0"
   }

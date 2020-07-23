@@ -22,9 +22,9 @@ const displayNotifications = events => {
 class SocketController extends Component {
   connectSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    //const socket = new WebSocket(protocol + '//' + window.location.host + '/api/socket');
+    // const socket = new WebSocket(protocol + '//' + window.location.host + '/api/socket');
 
-  const socket = new WebSocket("wss://engesp.gutatech.com/api/socket");
+  const socket = new WebSocket("wss://engesp.gutatech.com.br/api/socket");
     socket.onclose = () => {
       setTimeout(() => this.connectSocket(), 60 * 1000);
     };
