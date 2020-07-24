@@ -4,7 +4,7 @@ import MaterialTable from "material-table";
 import { updateUsers } from './actions';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import AlertDeleteUser from './AlertDeleteUser';
+import AlertDelete from './AlertDelete';
 import EditUserDialog from './EditUserDialog'
 import LinkIcon from '@material-ui/icons/Link';
 import UserDeviceDialog from './UserDeviceDialog'
@@ -77,12 +77,13 @@ class UserTable extends Component {
         });
     }
 
-    updateUser(user) {
-        const url = "/api/users/" + (user.id !== -1 ? user.id : "");
-        const method = user.id !== -1 ? "PUT" : "POST"
+    updateUser() {
+        const { currentUser } = this.state;
+        const url = "/api/users/" + (currentUser.id !== -1 ? currentUser.id : "");
+        const method = currentUser.id !== -1 ? "PUT" : "POST"
         fetch(url, {
             method: method,
-            body: new Blob([JSON.stringify(user)], { type: 'application/json' })
+            body: new Blob([JSON.stringify(currentUser)], { type: 'application/json' })
         }).then(response => {
             if (response.ok) {
                 fetch('/api/users').then(response => {
@@ -104,8 +105,8 @@ class UserTable extends Component {
 
         return (
             <div>
-                <AlertDeleteUser
-                    user={currentUser}
+                <AlertDelete
+                    text={"Tem certeza que gostaria de remover o usuário " + (currentUser != null ? currentUser.name : "") + "?"}
                     open={alertOpen}
                     setOpen={this.openAlertDeleteUser}
                     onConfirm={this.deleteUser}
